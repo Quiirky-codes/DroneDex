@@ -13,4 +13,11 @@ Machine learning techniques were also employed to create a model that powers the
 * Machine Learning: Techniques and libraries were employed to create a custom model for the chatbot.
 * HTML/CSS/JavaScript: Used for developing the front-end interface.
 
+# Collaborators
+* Amith M Jain
+* S P Harshith
+* Amogh
+* Aditya Sinha
+
+
 
