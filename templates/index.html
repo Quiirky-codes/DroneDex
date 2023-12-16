@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Question Answering System</title>
+</head>
+<body>
+    <div class="container">
+        <div class="chat-window" id="chat-window">
+            <div class="chat-header">Question Answering System</div>
+            <div class="chat-body" id="chat-body"></div>
+            <div class="chat-input">
+                <input type="text" id="question" placeholder="Type your question...">
+                <button type="button" onclick="askQuestion()">Ask</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function askQuestion() {
+            var question = document.getElementById("question").value;
+            var chatBody = document.getElementById("chat-body");
+
+            if (!question) {
+                appendMessage("Please enter a question.", "system");
+                return;
+            }
+
+            appendMessage(question, "user");
+
+            fetch('/ask', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'question=' + encodeURIComponent(question),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if ('error' in data) {
+                    appendMessage(data['error'], "system");
+                } else {
+                    appendMessage(data['Title'], "bot");
+                    appendMessage(data['Summary'], "bot");
+                    if (data['URL']) {
+                        appendMessage(`<a href="${data['URL']}" target="_blank">Read more</a>`, "bot");
+                    }
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function appendMessage(message, sender) {
+            var chatBody = document.getElementById("chat-body");
+            var messageDiv = document.createElement("div");
+
+            if (sender === "system") {
+                messageDiv.className = "system-message";
+            } else if (sender === "user") {
+                messageDiv.className = "user-message";
+            } else {
+                messageDiv.className = "bot-message";
+            }
+
+            messageDiv.innerHTML = message;
+            chatBody.appendChild(messageDiv);
+
+            // Scroll to the bottom of the chat window
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+    </script>
+</body>
+</html>
