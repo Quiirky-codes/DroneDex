@@ -34,7 +34,7 @@ This code is a Python script for a Flask web application that serves as a basic 
 
 2. Flask Setup:
 
-An instance of the Flask web application is created with app = Flask(__name__).
+   An instance of the Flask web application is created with app = Flask(__name__).
 
 * SpaCy Model Loading: The script attempts to load the spaCy English language model (en_core_web_sm). If not available, it installs spaCy and downloads the model.
   
